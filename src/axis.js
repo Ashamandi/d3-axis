@@ -28,16 +28,16 @@ function entering() {
 }
 
 function orientReverser(orient){
-    if (orient === left){
-        return right;
-    } else if (orient == right) {
-        return left;
-    }
-    return orient;
+  if (orient === left){
+    return right;
+  } else if (orient == right) {
+    return left;
+  }
+  return orient;
 }
 
 function axis(orient, scale) {
-    var direction = "ltr", 
+  var direction = "ltr", 
       tickArguments = [],
       tickValues = null,
       tickFormat = null,
@@ -45,8 +45,8 @@ function axis(orient, scale) {
       tickSizeOuter = 6,
       tickPadding = 3;
 
-    function axis(context) {
-        orient = direction === "rtl" ? orientReverser(orient) : orient;  
+  function axis(context) {
+    orient = direction === "rtl" ? orientReverser(orient) : orient;  
     var k = orient === top || orient === left ? -1 : 1,
         x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
         transform = orient === top || orient === bottom ? translateX : translateY,
@@ -107,7 +107,7 @@ function axis(orient, scale) {
 
     tick
         .attr("opacity", 1)
-        .attr("transform", function(d) { return transform(position(d)); })
+        .attr("transform", function(d) { return transform(position(d)); });
 
     line
         .attr(x + "2", k * tickSizeInner);
