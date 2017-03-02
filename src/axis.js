@@ -27,19 +27,30 @@ function entering() {
   return !this.__axis;
 }
 
+function orientReverser(orient){
+    if (orient === left){
+        return right;
+    } else if (orient == right) {
+        return left;
+    }
+    return orient;
+}
+
 function axis(orient, scale) {
-  var tickArguments = [],
+    var direction = "ltr", 
+      tickArguments = [],
       tickValues = null,
       tickFormat = null,
       tickSizeInner = 6,
       tickSizeOuter = 6,
-      tickPadding = 3,
-      k = orient === top || orient === left ? -1 : 1,
-      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
-      transform = orient === top || orient === bottom ? translateX : translateY;
+      tickPadding = 3;
 
-  function axis(context) {
-    var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
+    function axis(context) {
+        orient = direction === "rtl" ? orientReverser(orient) : orient;  
+    var k = orient === top || orient === left ? -1 : 1,
+        x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+        transform = orient === top || orient === bottom ? translateX : translateY,
+        values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
         format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity) : tickFormat,
         spacing = Math.max(tickSizeInner, 0) + tickPadding,
         range = scale.range(),
@@ -96,13 +107,13 @@ function axis(orient, scale) {
 
     tick
         .attr("opacity", 1)
-        .attr("transform", function(d) { return transform(position(d)); });
+        .attr("transform", function(d) { return transform(position(d)); })
 
     line
         .attr(x + "2", k * tickSizeInner);
 
     text
-        .attr(x, k * spacing)
+        .attr(x, k * spacing + (direction === "rtl" ? 15 : 0))
         .text(format);
 
     selection.filter(entering)
@@ -149,6 +160,10 @@ function axis(orient, scale) {
 
   axis.tickPadding = function(_) {
     return arguments.length ? (tickPadding = +_, axis) : tickPadding;
+  };
+  
+  axis.direction = function(_) {
+      return arguments.length ? (direction = _, axis) : direction;
   };
 
   return axis;

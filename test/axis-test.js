@@ -13,7 +13,15 @@ tape("axisLeft(scale) has the expected defaults", function(test) {
   test.equal(a.tickSizeInner(), 6);
   test.equal(a.tickSizeOuter(), 6);
   test.equal(a.tickPadding(), 3);
+  test.equal(a.direction(), "ltr");
   test.end();
+});
+
+tape("axisLeft(scale).direction('rtl') sets the direction argument", function (test) {
+    var s = scale.scaleLinear(),
+        a = axis.axisLeft(s).direction("rtl");
+    test.equal(a.direction(), "rtl");
+    test.end();
 });
 
 tape("axis.ticks(arguments…) sets the tick arguments", function(test) {
